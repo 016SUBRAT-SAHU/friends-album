@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="album.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+  <title>My Album</title>
+</head>
+
+<body>
+  
+  <audio id="bgMusic" autoplay loop hidden>
+  <source src="img/Beautiful.mp3.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<button id="toggleAudio" style="position: fixed; top: 10px; right: 10px;">Pause Music</button>
+<script>
+  const audio = document.getElementById('bgMusic');
+  const toggleBtn = document.getElementById('toggleAudio');
+  toggleBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      toggleBtn.textContent = 'Pause Music';
+    } else {
+      audio.pause();
+      toggleBtn.textContent = 'Play Music';
+    }
+  });
+</script>
+  <div id="app">
+    <div class="container">
+
+      <div class="album" :class="{ 'album--open': isOpenedTop }">
+
+        <!-- ✅ Front Cover Page (always on top) -->
+
+        <div class="album__paper front-cover" :style="{ zIndex: items.length + 1000 }" :class="{ open: isOpenedTop }"
+          @click="topOpen">
+
+          <div class="album__page front">
+            <div>
+              <div class="album__top-title">Album</div>
+              <p class="txt-tcw">😊Friends ❌ family ✅
+              </p>
+              <h1 class="created-by">Created by subrat</h1>
+              <div class="cat-mark">
+                <img src="img/ff.jpg" alt="Front Page Image" />
+              </div>
+            </div>
+          </div>
+          <div class="album__page back" :style="{zIndex: 0}"></div>
+        </div>
+
+        <!-- ✅ Inner Pages -->
+        <div class="album__paper" v-for="(page, idx) in items" :key="idx" :style="{ zIndex: items.length - idx }"
+          :class="{ open: page.isOpen }" @click="handleClick(idx, $event)">
+          <div class="album__page front">
+            <div class="content">
+              <div class="content__title">{{ page.title }}</div>
+              <div class="content__img1">
+                
+                <img :src="page.img1" />
+                <p class="content__desc">{{ page.desc }}</p>
+                <div class="content__text">{{ idx + 1 }}</div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="album__page back" :style="{zIndex: 0}"></div>
+        </div>
+
+        <!-- Album structure -->
+        <div class="album__back"></div>
+        <div class="album__bottom"></div>
+        <div class="album__shadow"></div>
+      </div>
+    </div>
+  </div>
+  <script src="album.js"></script>
+</body>
+
+</html>
